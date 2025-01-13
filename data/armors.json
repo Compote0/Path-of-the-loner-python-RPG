@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Cuirasse en fer",
+    "defense": 15.0
+  },
+  {
+    "name": "Armure magique",
+    "defense": 25.0
+  }
+]
