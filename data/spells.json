@@ -4,7 +4,7 @@
     "class": "Mage",
     "damage": 30,
     "mana_cost": 20,
-    "description": "Deals fire damage to an enemy.",
+    "description": "Deals fire damage to ana enemy.",
     "effect": "burn",
     "image": "assets/spells/fireball.jpg"
   },
