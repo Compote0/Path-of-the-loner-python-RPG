@@ -2,10 +2,17 @@ import pygame
 from src.effects import apply_effect
 
 def encounter(screen, mode):
+    """
+    Handles a battle encounter between the player and an enemy.
+    
+    Args:
+        screen: Pygame display surface.
+        mode: The mode of the encounter (e.g., PVE or PVP).
+    """
     font = pygame.font.Font(None, 36)
     background = pygame.image.load("assets/mob_encounter.jpg")
 
-    # Création des personnages
+    # Character creation
     player = {"name": "Hero", "hp": 100, "attack": 20, "class": "Mage", "status": None}
     enemy = {"name": "Goblin", "hp": 50, "attack": 10, "class": "Warrior", "status": None}
 
@@ -15,17 +22,17 @@ def encounter(screen, mode):
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_a:  # Attaque du joueur
+                if event.key == pygame.K_a:  # Player attack
                     if player["class"] == "Mage":
                         apply_effect(enemy, "frozen")
                     enemy["hp"] -= player["attack"]
                     if enemy["hp"] <= 0:
-                        print("Vous avez gagné !")
+                        print("You have won!")
                         running = False
-                elif event.key == pygame.K_ESCAPE:  # Quitter
+                elif event.key == pygame.K_ESCAPE:  # Quit
                     running = False
 
-        # Affichage des informations
+        # Display information
         screen.blit(background, (0, 0))
         player_text = font.render(f"{player['name']} - HP: {player['hp']} - Status: {player['status']}", True, (255, 255, 255))
         enemy_text = font.render(f"{enemy['name']} - HP: {enemy['hp']} - Status: {enemy['status']}", True, (255, 255, 255))

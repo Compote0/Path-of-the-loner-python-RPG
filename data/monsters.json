@@ -1,20 +1,74 @@
 [
   {
     "type": "Normal",
-    "name": "Gobelin",
+    "name": "Goblin",
     "hp": 50.0,
-    "attack": 10.0
+    "attack": 10.0,
+    "image": "assets/monsters/goblin_fighter.jpg",
+    "probability": 1.0
+  },
+  {
+    "type": "Normal",
+    "name": "Wolf",
+    "hp": 60.0,
+    "attack": 12.0,
+    "image": "assets/monsters/wolf.jpg",
+    "probability": 1.0
+  },
+  {
+    "type": "Normal",
+    "name": "Skeleton",
+    "hp": 40.0,
+    "attack": 8.0,
+    "image": "assets/monsters/skeleton.jpg",
+    "probability": 1.0
+  },
+  {
+    "type": "Normal",
+    "name": "Bandit",
+    "hp": 55.0,
+    "attack": 11.0,
+    "image": "assets/monsters/bandit.jpg",
+    "probability": 1.0
+  },
+  {
+    "type": "Normal",
+    "name": "Giant Spider",
+    "hp": 45.0,
+    "attack": 9.0,
+    "image": "assets/monsters/spider.jpg",
+    "probability": 1.0
   },
   {
     "type": "Elite",
     "name": "Ogre",
     "hp": 100.0,
-    "attack": 20.0
+    "attack": 20.0,
+    "image": "assets/monsters/Ogre.jpg",
+    "probability": 0.2
+  },
+  {
+    "type": "Elite",
+    "name": "Minotaur",
+    "hp": 120.0,
+    "attack": 25.0,
+    "image": "assets/monsters/minautor.jpg",
+    "probability": 0.2
+  },
+  {
+    "type": "Elite",
+    "name": "Stone Golem",
+    "hp": 110.0,
+    "attack": 22.0,
+    "image": "assets/monsters/stone_golem.jpg",
+    "probability": 0.2
   },
   {
     "type": "Boss",
     "name": "Dragon",
     "hp": 200.0,
-    "attack": 50.0
+    "attack": 50.0,
+    "image": "assets/monsters/cosmic_drake.jpg",
+    "probability": 0.05
   }
 ]
