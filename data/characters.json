@@ -1,0 +1,50 @@
+[
+  {
+    "class": "Warrior",
+    "hp": 120,
+    "attack": 15,
+    "defense": 10,
+    "speed": 5,
+    "description": "The warrior is sturdy and deals consistent damage with good defense.",
+    "abilities": ["Charge", "Block"],
+    "weapons": ["Long Sword", "War Axe"],
+    "spells": ["Charge", "Block"],
+    "image": "assets/characters/warrior.jpg"
+  },
+  {
+    "class": "Assassin",
+    "hp": 80,
+    "attack": 20,
+    "defense": 5,
+    "speed": 15,
+    "description": "The assassin is fast and delivers critical hits with low defense.",
+    "abilities": ["Stealth Attack", "Evasion"],
+    "weapons": ["Daggers"],
+    "spells": ["Stealth Attack", "Evasion"],
+    "image": "assets/characters/assassin.jpg"
+  },
+  {
+    "class": "Mage",
+    "hp": 70,
+    "attack": 25,
+    "defense": 3,
+    "speed": 7,
+    "description": "The mage uses powerful spells but has low health and defense.",
+    "abilities": ["Fireball", "Magic Barrier"],
+    "weapons": ["Fire Staff"],
+    "spells": ["Fireball", "Magic Barrier"],
+    "image": "assets/characters/mage.jpg"
+  },
+  {
+    "class": "Archer",
+    "hp": 90,
+    "attack": 18,
+    "defense": 7,
+    "speed": 10,
+    "description": "The archer attacks from a distance with precision and balanced speed.",
+    "abilities": ["Precise Shot", "Poison Arrow"],
+    "weapons": ["Long Bow"],
+    "spells": ["Precise Shot", "Poison Arrow"],
+    "image": "assets/characters/archer.jpg"
+  }
+]

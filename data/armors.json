@@ -1,10 +1,66 @@
 [
   {
-    "name": "Cuirasse en fer",
-    "defense": 15.0
+    "name": "Iron Cuirass",
+    "class": "Warrior",
+    "defense": 15.0,
+    "weight": 20.0,
+    "description": "A sturdy iron cuirass that offers basic protection in battle.",
+    "image": "assets/armors/iron_cuirass.jpg"
   },
   {
-    "name": "Armure magique",
-    "defense": 25.0
+    "name": "Magical Armor",
+    "class": "Mage",
+    "defense": 25.0,
+    "weight": 10.0,
+    "description": "An enchanted armor that enhances magical protection.",
+    "image": "assets/armors/magical_armor.jpg"
+  },
+  {
+    "name": "Leather Tunic",
+    "class": "Archer",
+    "defense": 10.0,
+    "weight": 5.0,
+    "description": "A lightweight leather tunic that allows for agile movement.",
+    "image": "assets/armors/leather_tunic.jpg"
+  },
+  {
+    "name": "Assassin's Cloak",
+    "class": "Assassin",
+    "defense": 12.0,
+    "weight": 3.0,
+    "description": "A stealthy cloak designed to provide minimal protection while enhancing agility.",
+    "image": "assets/armors/assassins_cloak.jpg"
+  },
+  {
+    "name": "Dragon Scale Armor",
+    "class": "Warrior",
+    "defense": 50.0,
+    "weight": 25.0,
+    "description": "An armor forged from dragon scales, offering unmatched protection against fire.",
+    "image": "assets/armors/dragon_scale_armor.jpg"
+  },
+  {
+    "name": "Mystic Robe",
+    "class": "Mage",
+    "defense": 18.0,
+    "weight": 8.0,
+    "description": "A mystical robe infused with arcane energy, increasing mana regeneration.",
+    "image": "assets/armors/mystic_robe.jpg"
+  },
+  {
+    "name": "Elven Vest",
+    "class": "Archer",
+    "defense": 20.0,
+    "weight": 6.0,
+    "description": "A finely crafted vest by elves, offering balance between protection and agility.",
+    "image": "assets/armors/elven_vest.jpg"
+  },
+  {
+    "name": "Shadow Armor",
+    "class": "Assassin",
+    "defense": 15.0,
+    "weight": 4.0,
+    "description": "An armor designed for assassins, providing enhanced stealth and light protection.",
+    "image": "assets/armors/shadow_armor.jpg"
   }
 ]

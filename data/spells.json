@@ -1,0 +1,74 @@
+[
+  {
+    "name": "Fireball",
+    "class": "Mage",
+    "damage": 30,
+    "mana_cost": 20,
+    "description": "Deals fire damage to an enemy.",
+    "effect": "burn",
+    "image": "assets/spells/fireball.jpg"
+  },
+  {
+    "name": "Magic Barrier",
+    "class": "Mage",
+    "damage": 0,
+    "mana_cost": 15,
+    "description": "Reduces damage taken for 2 turns.",
+    "effect": "shield",
+    "image": "assets/spells/magic_barrier.jpg"
+  },
+  {
+    "name": "Precise Shot",
+    "class": "Archer",
+    "damage": 25,
+    "mana_cost": 10,
+    "description": "A precise shot dealing heavy damage.",
+    "effect": "crit",
+    "image": "assets/spells/precise_shot.jpg"
+  },
+  {
+    "name": "Poison Arrow",
+    "class": "Archer",
+    "damage": 20,
+    "mana_cost": 10,
+    "description": "Deals damage and poisons the target.",
+    "effect": "poison",
+    "image": "assets/spells/poison_arrow.jpg"
+  },
+  {
+    "name": "Stealth Attack",
+    "class": "Assassin",
+    "damage": 40,
+    "mana_cost": 15,
+    "description": "A critical attack dealing massive damage.",
+    "effect": "crit",
+    "image": "assets/spells/stealth_attack.jpg"
+  },
+  {
+    "name": "Evasion",
+    "class": "Assassin",
+    "damage": 0,
+    "mana_cost": 5,
+    "description": "Increases dodge chance for 2 turns.",
+    "effect": "dodge",
+    "image": "assets/spells/evasion.jpg"
+  },
+  {
+    "name": "Charge",
+    "class": "Warrior",
+    "damage": 35,
+    "mana_cost": 10,
+    "description": "A powerful attack that ignores enemy defense.",
+    "effect": "break",
+    "image": "assets/spells/charge.jpg"
+  },
+  {
+    "name": "Block",
+    "class": "Warrior",
+    "damage": 0,
+    "mana_cost": 0,
+    "description": "Significantly reduces damage taken for 1 turn.",
+    "effect": "block",
+    "image": "assets/spells/block.jpg"
+  }
+]
