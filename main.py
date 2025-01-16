@@ -11,12 +11,12 @@ def main():
         pygame.init()
         print("Pygame initialisé.")
 
-        # Création de la fenêtre
+        
         screen = pygame.display.set_mode((800, 600))
         pygame.display.set_caption("Path of the Loner")
         print("Fenêtre initialisée avec succès.")
 
-        # Lancement du menu principal
+        
         print("Appel du menu principal...")
         choice = main_menu(screen)
         print(f"Menu principal terminé avec le choix : {choice}")
@@ -25,7 +25,7 @@ def main():
             print("Fermeture du jeu depuis le menu principal.")
             return
 
-        # Chargement du personnage principal
+        
         print("Chargement du personnage principal...")
         main_character = load_main_character()
         print(f"Personnage principal chargé : {main_character}")

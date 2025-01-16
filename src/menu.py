@@ -6,7 +6,6 @@ def main_menu(screen):
     print("Chargement du menu principal...")
     clock = pygame.time.Clock()
 
-    # Charger le fond d'écran
     try:
         background_path = os.path.join("assets", "background.jpg")
         background = pygame.image.load(background_path)
@@ -17,7 +16,7 @@ def main_menu(screen):
         background = pygame.Surface(screen.get_size())
         background.fill((30, 30, 30))
 
-    # Charger les polices
+
     try:
         font_path = os.path.join("assets", "fonts", "pixel_font.ttf")
         title_font = pygame.font.Font(font_path, 80)
@@ -27,16 +26,15 @@ def main_menu(screen):
         print("Fichier de police introuvable.")
         return "QUIT"
 
-    # Texte du menu
+    
     title_text = title_font.render("Path of the Loner", True, (255, 255, 255))
     play_pve_text = button_font.render("Play PVE", True, (255, 255, 255))
     quit_text = button_font.render("Quit", True, (255, 255, 255))
 
-    # Dimensions des boutons
     button_width, button_height = 300, 80
     button_spacing = 20
 
-    # Positions des boutons
+    
     play_pve_rect = pygame.Rect(
         (800 - button_width) // 2,
         (600 // 2) - button_height - button_spacing,
@@ -54,17 +52,16 @@ def main_menu(screen):
     while running:
         screen.blit(background, (0, 0))
 
-        # Afficher le titre
+       
         title_pos = ((800 - title_text.get_width()) // 2, 100)
         screen.blit(title_text, title_pos)
 
-        # Dessiner les boutons
         pygame.draw.rect(screen, (50, 50, 50), play_pve_rect, border_radius=10)
         pygame.draw.rect(screen, (50, 50, 50), quit_rect, border_radius=10)
         screen.blit(play_pve_text, (play_pve_rect.centerx - play_pve_text.get_width() // 2, play_pve_rect.centery - play_pve_text.get_height() // 2))
         screen.blit(quit_text, (quit_rect.centerx - quit_text.get_width() // 2, quit_rect.centery - quit_text.get_height() // 2))
 
-        # Gestion des événements
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 print("Quit event détecté.")

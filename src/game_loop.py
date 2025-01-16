@@ -25,20 +25,20 @@ def game_loop(screen, main_character):
 
     font = pygame.font.Font(None, 36)
 
-    # Charger les monstres
+ 
     monsters = load_data("data/monsters.json")
     if not monsters:
         print("Erreur : Aucun monstre trouvé dans 'monsters.json'.")
         return
 
-    # Initialiser les probabilités des monstres
+    
     for mob in monsters:
-        mob["probability"] = 1  # Tous les monstres ont la même probabilité de base
+        mob["probability"] = 1  
 
-    current_level = 1  # Niveau actuel
+    current_level = 1  
 
     while main_character["hp"] > 0:
-        # Ajuster les probabilités des monstres selon le niveau
+        
         for mob in monsters:
             if mob["type"] == "Boss":
                 mob["probability"] = 0.1 + 0.01 * current_level
@@ -47,7 +47,7 @@ def game_loop(screen, main_character):
             else:
                 mob["probability"] = 1
 
-        # Combat
+  
         print(f"Combat au niveau {current_level}...")
         victory = encounter(screen, main_character, monsters)
 
@@ -55,17 +55,16 @@ def game_loop(screen, main_character):
             print("Le héros est mort. Fin du jeu.")
             break
 
-        # Récompenses
+   
         rewards = generate_rewards()
         print(f"Récompenses obtenues : {rewards['gold']} or et {rewards['items']['name']}.")
 
-        # Appliquer les récompenses
+        
         main_character["hp"] = min(main_character["hp"] + rewards["items"].get("healing", 0), main_character["max_hp"])
         if rewards["items"]["type"] == "weapon":
             main_character["attack"] += rewards["items"]["attack"]
         elif rewards["items"]["type"] == "armor":
             main_character["defense"] += rewards["items"]["defense"]
 
-        current_level += 1  # Passer au niveau suivant
-
+        current_level += 1  
     print("Fin du mode PVE.")
