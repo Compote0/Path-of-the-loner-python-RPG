@@ -1,41 +1,68 @@
 {
     "name": "Hero",
-    "class": "Assassin",
-    "hp": 80,
-    "attack": 20,
-    "defense": 5,
-    "speed": 15,
+    "class": "Warrior",
+    "hp": 120,
+    "attack": 30,
+    "defense": 10,
+    "speed": 5,
     "status": null,
     "spells": [
         {
-            "name": "Stealth Attack",
-            "class": "Assassin",
-            "damage": 40,
-            "mana_cost": 15,
-            "description": "A critical attack dealing massive damage.",
-            "effect": "crit",
-            "image": "assets/spells/stealth_attack.jpg"
+            "name": "Charge",
+            "class": "Warrior",
+            "damage": 35,
+            "mana_cost": 10,
+            "description": "A powerful attack that ignores enemy defense.",
+            "effect": "break",
+            "image": "assets/spells/charge.jpg"
         },
         {
-            "name": "Evasion",
-            "class": "Assassin",
+            "name": "Block",
+            "class": "Warrior",
             "damage": 0,
-            "mana_cost": 5,
-            "description": "Increases dodge chance for 2 turns.",
-            "effect": "dodge",
-            "image": "assets/spells/evasion.jpg"
+            "mana_cost": 0,
+            "description": "Significantly reduces damage taken for 1 turn.",
+            "effect": "block",
+            "image": "assets/spells/block.jpg"
         }
     ],
     "weapons": [
         {
-            "name": "Daggers",
-            "class": "Assassin",
-            "damage": 12,
-            "description": "Quick daggers for delivering critical hits.",
-            "image": "assets/weapon/daggers.jpg"
+            "name": "Long Sword",
+            "class": "Warrior",
+            "damage": 15,
+            "description": "A balanced sword for melee combat.",
+            "image": "assets/weapon/longsword.jpg"
+        },
+        {
+            "name": "War Axe",
+            "class": "Warrior",
+            "damage": 20,
+            "description": "A heavy axe that deals massive damage.",
+            "image": "assets/weapon/axe.jpg"
         }
     ],
     "ancestry": [
+        {
+            "name": "Dragonic",
+            "description": "Bearers of this ancestry inherit the power of dragons, increasing their attack and resistance to fire.",
+            "effect": "Increases attack by 20% and reduces fire damage by 30%",
+            "stats_modifiers": {
+                "hp": 10,
+                "attack": 20,
+                "defense": 5,
+                "speed": -5
+            },
+            "abilities": [
+                "Fire Breath",
+                "Reinforced Scales"
+            ],
+            "compatible_classes": [
+                "Warrior",
+                "Mage"
+            ],
+            "image": "assets/ancestry/dragonic.jpg"
+        },
         {
             "name": "Sanguine",
             "description": "Bearers of this ancestry grow stronger based on the damage they deal, at the cost of their own health.",
@@ -57,25 +84,66 @@
             "image": "assets/ancestry/sanguine.jpg"
         },
         {
-            "name": "Shadow Blade",
-            "description": "This ancestry immerses the bearer in shadows, increasing their dodge and critical hit chances.",
-            "effect": "Increases critical hit and dodge chances by 20%",
+            "name": "Celestial",
+            "description": "Blessed by the gods, bearers of this ancestry gain healing and purification abilities.",
+            "effect": "Increases healing received by 30% and purifies negative effects every 3 actions",
             "stats_modifiers": {
-                "hp": -5,
-                "attack": 15,
-                "defense": -5,
-                "speed": 20
+                "hp": 15,
+                "attack": -10,
+                "defense": 10,
+                "speed": 0
             },
             "abilities": [
-                "Shadow Step",
-                "Fatal Strike"
+                "Purifying Light",
+                "Divine Healing"
             ],
             "compatible_classes": [
-                "Assassin",
-                "Archer"
+                "Mage",
+                "Warrior"
             ],
-            "image": "assets/ancestry/shadow_blade.jpg"
+            "image": "assets/ancestry/celestial.jpg"
+        },
+        {
+            "name": "Runic",
+            "description": "Bearers of runes master ancient energy, enhancing their defense and the duration of magical effects.",
+            "effect": "Increases defense by 15% and extends beneficial effects by 2 turns",
+            "stats_modifiers": {
+                "hp": 20,
+                "attack": -5,
+                "defense": 15,
+                "speed": -5
+            },
+            "abilities": [
+                "Protection Rune",
+                "Power Rune"
+            ],
+            "compatible_classes": [
+                "Warrior",
+                "Mage"
+            ],
+            "image": "assets/ancestry/runic.jpg"
+        },
+        {
+            "name": "Beastial",
+            "description": "Heirs of the wild, these bearers increase their speed and physical power as the battle progresses.",
+            "effect": "Gains +2 attack and +1 speed per turn",
+            "stats_modifiers": {
+                "hp": 10,
+                "attack": 10,
+                "defense": 0,
+                "speed": 15
+            },
+            "abilities": [
+                "Savage Roar",
+                "Frenzy"
+            ],
+            "compatible_classes": [
+                "Archer",
+                "Warrior"
+            ],
+            "image": "assets/ancestry/beastial.jpg"
         }
     ],
-    "image": "assets/characters/assassin.jpg"
+    "background": "assets/hero_backgrounds/warrior_background.jpg",
+    "image": "assets/characters/warrior.jpg"
 }

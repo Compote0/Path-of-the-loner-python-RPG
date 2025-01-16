@@ -3,6 +3,7 @@ import pygame
 from src.effects import apply_effect, random_effect
 from src.utility import load_data
 from src.merchant import merchant_encounter
+from src.transition_screens import encounter_screen, victory_screen, defeat_screen, merchant_screen
 
 encounter_counter = 0
 console_log = []
@@ -77,144 +78,151 @@ def show_console(screen, font):
         text_surface = font.render(log, True, (255, 255, 0))
         screen.blit(text_surface, (console_x + 10, console_y + 10 + i * 20))
 
+def load_background(image_path):
+    """Load and scale the background image."""
+    try:
+        background = pygame.image.load(image_path)
+        background = pygame.transform.scale(background, (1920, 1080))
+        return background
+    except FileNotFoundError:
+        print(f"Error: Background image not found at {image_path}. Using default black background.")
+        background = pygame.Surface((1920, 1080))
+        background.fill((0, 0, 0))
+        return background
 
 def encounter(screen, main_character, mob_pool, is_pvp=False):
     """
     Handles a battle between the hero and a monster or another hero.
-
-    Args:
-        screen: Pygame display surface.
-        main_character: Dictionary representing the hero.
-        mob_pool: List of available monsters or heroes.
-        is_pvp: If True, treats mob_pool as a list of heroes for PvP.
-
-    Returns:
-        bool: True if the hero wins, False if they lose.
     """
     global encounter_counter, console_log
     font = pygame.font.Font(None, 24)
+    instruction_font = pygame.font.Font(None, 32)
 
     main_character.setdefault('coins', 0)
     main_character.setdefault('status', None)
     main_character.setdefault('max_hp', main_character.get('hp', 100))
 
-    # Selection logic
-    if is_pvp:
-        selected_opponent = mob_pool[0]  # In PvP, we pass only one opponent
-    else:
-        selected_opponent = random.choices(
-            mob_pool,
-            weights=[mob["probability"] for mob in mob_pool],
-            k=1
-        )[0]
+    # Select the opponent
+    if not mob_pool:
+        raise ValueError("mob_pool is empty. No opponents available.")
 
+    selected_opponent = random.choice(mob_pool)
+
+    # Debug: Log full data of the opponent
+    print(f"Selected opponent data: {selected_opponent}")
+
+    # Use 'type' instead of 'class' for monsters
+    opponent_type = selected_opponent.get("type", "Unknown")
+    opponent_name = selected_opponent.get("name", "Unknown")
+    print(f"Selected opponent: {opponent_name} ({opponent_type})")
+
+    # Load the background
+    background_path = selected_opponent.get("background", "assets/monsters_rooms/default_room.jpg")
+    try:
+        background = load_background(background_path)
+    except Exception as e:
+        print(f"Error loading background: {e}")
+        background = load_background("assets/monsters_rooms/default_room.jpg")
+
+    # Load the opponent's image
     try:
         monster_image = pygame.image.load(selected_opponent["image"])
-        monster_image = pygame.transform.scale(
-            monster_image, (screen.get_width() // 3, screen.get_height() // 3)
-        )
+        scaled_width = monster_image.get_width() // 3
+        scaled_height = monster_image.get_height() // 3
+        monster_image = pygame.transform.scale(monster_image, (scaled_width, scaled_height))
+        monster_rect = monster_image.get_rect()
+        monster_rect.center = (screen.get_width() // 2, screen.get_height() // 2 - 100)
     except FileNotFoundError:
-        print(f"Error: Monster image not found ({selected_opponent['image']}).")
+        print(f"Error: Opponent image not found ({selected_opponent['image']}).")
         monster_image = pygame.Surface((400, 400))
         monster_image.fill((255, 0, 0))
+        monster_rect = monster_image.get_rect()
+        monster_rect.center = (screen.get_width() // 2, screen.get_height() // 2 - 100)
 
-    # For PvP, use "class"; for PvE, omit "class"
+    # Enemy data
     enemy = {
-        "name": selected_opponent["name"],
-        "hp": selected_opponent["hp"],
-        "max_hp": selected_opponent["hp"],
-        "attack": selected_opponent["attack"],
-        "class": selected_opponent.get("class", "Monster"),  # Default to "Monster" if class is missing
+        "name": opponent_name,
+        "hp": selected_opponent.get("hp", 100),
+        "max_hp": selected_opponent.get("hp", 100),
+        "attack": selected_opponent.get("attack", 10),
+        "type": opponent_type,
         "status": None
     }
 
+    # Screens for victory, encounter, and merchant
+    encounter_screen(screen, f"You encountered a {enemy['type']}: {enemy['name']}!", "Press Q to start the battle", background, monster_image)
 
+    # Combat loop
     running = True
     turn = "player"
-
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
                 return False
-
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     print("Exiting game...")
                     running = False
                     return False
-
                 if turn == "player" and event.key == pygame.K_a:
                     if main_character["status"] not in ["Frozen", "Stunned"]:
-                        effect = random_effect()
-                        if effect:
-                            apply_effect(enemy, effect)
                         enemy["hp"] -= main_character["attack"]
                         console_log.append(f"You attacked {enemy['name']} for {main_character['attack']} damage!")
-
                         if enemy["hp"] <= 0:
-                            encounter_counter += 1
                             console_log.append(f"{enemy['name']} defeated!")
-
                             coins_reward = random.randint(5, 20)
                             main_character["coins"] += coins_reward
                             console_log.append(f"Earned {coins_reward} coins!")
-
-                            xp_gain = 50
-                            main_character.setdefault("xp", 0)
-                            main_character.setdefault("level", 1)
-                            main_character["xp"] += xp_gain
-                            console_log.append(f"Gained {xp_gain} XP!")
-
-                            if main_character["xp"] >= main_character["level"] * 100:
-                                main_character["level"] += 1
-                                main_character["xp"] = 0
-                                main_character["max_hp"] += 10
-                                main_character["hp"] = main_character["max_hp"]
-                                console_log.append(f"Level up! Level {main_character['level']}.")
-                                level_up_animation(screen, font, "LEVEL UP!")
-
-                            if encounter_counter % 10 == 0:
-                                merchant_encounter(screen, main_character)
-
-                            fade_effect(screen, monster_image)
+                            victory_screen(screen, f"You defeated {enemy['name']}!", "Press Q to continue your adventure", background)
                             running = False
                             return True
                     turn = "enemy"
-
         if turn == "enemy":
-            if enemy["status"] not in ["Frozen", "Stunned"]:
-                effect = random_effect()
-                if effect:
-                    apply_effect(main_character, effect)
-                main_character["hp"] -= enemy["attack"]
-                console_log.append(f"{enemy['name']} attacked you for {enemy['attack']} damage!")
-
-                if main_character["hp"] <= 0:
-                    console_log.append("You have been defeated!")
-                    fade_effect(screen, monster_image)
-                    running = False
-                    return False
+            main_character["hp"] -= enemy["attack"]
+            console_log.append(f"{enemy['name']} attacked you for {enemy['attack']} damage!")
+            if main_character["hp"] <= 0:
+                console_log.append("You have been defeated!")
+                defeat_screen(screen, f"{enemy['name']} has defeated you!", "Press Q to exit", background)
+                running = False
+                return False
             turn = "player"
 
-        screen.fill((0, 0, 0))
-        screen.blit(monster_image, ((screen.get_width() - monster_image.get_width()) // 2, 100))
+        # Draw the background
+        screen.blit(background, (0, 0))
 
+        # Draw the opponent image
+        screen.blit(monster_image, monster_rect.topleft)
+
+        # Draw health bars with numerical values for the player
         draw_health_bar(
             screen, 50, screen.get_height() - 100, 300, 20,
             main_character["hp"], main_character["max_hp"], (255, 0, 0), (255, 255, 255)
         )
+        player_hp_text = font.render(f"{main_character['hp']}/{main_character['max_hp']}", True, (255, 255, 255))
+        screen.blit(player_hp_text, (50 + 150 - player_hp_text.get_width() // 2, screen.get_height() - 120))
+
+        # Draw health bars with numerical values for the enemy
         draw_health_bar(
             screen, screen.get_width() - 350, 100, 300, 20,
             enemy["hp"], enemy["max_hp"], (0, 255, 0), (255, 255, 255)
         )
+        enemy_hp_text = font.render(f"{enemy['hp']}/{enemy['max_hp']}", True, (255, 255, 255))
+        screen.blit(enemy_hp_text, (screen.get_width() - 350 + 150 - enemy_hp_text.get_width() // 2, 80))
 
+        # Draw "Press A to attack" instruction
+        instruction_text = instruction_font.render("Press A to attack", True, (255, 255, 255))
+        screen.blit(instruction_text, ((screen.get_width() - instruction_text.get_width()) // 2, screen.get_height() - 150))
+
+        # Draw player stats (e.g., coins)
         player_coins = main_character.get("coins", 0)
         player_text = font.render(f"{main_character['name']} - Coins: {player_coins}", True, (255, 255, 255))
         screen.blit(player_text, (50, screen.get_height() - 50))
 
+        # Display console logs
         show_console(screen, font)
 
+        # Update the screen
         pygame.display.flip()
 
     return False
