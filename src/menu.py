@@ -27,12 +27,12 @@ def main_menu(screen):
         return "QUIT"
 
     
-    title_text = title_font.render("Path of the Loner", True, (255, 255, 255))
+    title_text = title_font.render("POTL", True, (255, 255, 255))
     play_pve_text = button_font.render("Play PVE", True, (255, 255, 255))
     quit_text = button_font.render("Quit", True, (255, 255, 255))
 
-    button_width, button_height = 300, 80
-    button_spacing = 20
+    button_width, button_height = 350, 85
+    button_spacing = 25
 
     
     play_pve_rect = pygame.Rect(
