@@ -3,27 +3,19 @@ from src.utility import load_data
 from src.character import create_main_character, save_main_character
 from src.encounter import encounter
 
-def select_class(screen):
+def select_class(screen, characters):
+    """
+    Allow the player to select their class.
+    """
     font = pygame.font.Font(None, 36)
-
-    characters = load_data("data/characters.json")
-    if not characters:
-        print("Error: No class found in 'characters.json'.")
-        return
-
-    monsters = load_data("data/monsters.json")
-    if not monsters:
-        print("Error: No monsters found in 'monsters.json'.")
-        return
-
     class_images = []
+
     for char in characters:
         try:
             image = pygame.image.load(char["image"])
             image = pygame.transform.scale(image, (150, 150))
             class_images.append(image)
         except FileNotFoundError:
-            print(f"Error: Image not found for {char['class']}.")
             placeholder = pygame.Surface((150, 150))
             placeholder.fill((255, 0, 0))
             class_images.append(placeholder)
@@ -61,7 +53,4 @@ def select_class(screen):
 
         pygame.display.flip()
 
-    if selected_class:
-        main_character = create_main_character(selected_class)
-        save_main_character(main_character)
-        encounter(screen, main_character, monsters)
+    return selected_class

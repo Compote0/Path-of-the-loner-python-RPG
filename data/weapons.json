@@ -4,34 +4,34 @@
     "class": "Warrior",
     "damage": 15,
     "description": "A balanced sword for melee combat.",
-    "image": "assets/weapons/long_sword.jpg"
+    "image": "assets/weapon/longsword.jpg"
   },
   {
     "name": "War Axe",
     "class": "Warrior",
     "damage": 20,
     "description": "A heavy axe that deals massive damage.",
-    "image": "assets/weapons/war_axe.jpg"
+    "image": "assets/weapon/axe.jpg"
   },
   {
     "name": "Daggers",
     "class": "Assassin",
     "damage": 12,
     "description": "Quick daggers for delivering critical hits.",
-    "image": "assets/weapons/daggers.jpg"
+    "image": "assets/weapon/daggers.jpg"
   },
   {
     "name": "Long Bow",
     "class": "Archer",
     "damage": 18,
     "description": "A long bow that deals ranged damage.",
-    "image": "assets/weapons/long_bow.jpg"
+    "image": "assets/weapon/longbow.jpg"
   },
   {
     "name": "Fire Staff",
     "class": "Mage",
     "damage": 10,
     "description": "A magical staff that amplifies fire spells.",
-    "image": "assets/weapons/fire_staff.jpg"
+    "image": "assets/weapon/firestaff.jpg"
   }
 ]
