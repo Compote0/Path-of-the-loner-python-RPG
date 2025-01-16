@@ -12,6 +12,9 @@ def generate_random_opponent(characters):
     return create_main_character(opponent)
 
 def start_pvp(screen):
+    """
+    Start the PvP mode, allowing the player to battle against a random hero.
+    """
     font = pygame.font.Font(None, 36)
     characters = load_data("data/characters.json")
 
@@ -27,9 +30,9 @@ def start_pvp(screen):
 
     # Step 2: Generate a random opponent
     opponent_hero = generate_random_opponent(characters)
-    print(f"Opponent generated: {opponent_hero['name']}")
+    print(f"Opponent generated: {opponent_hero['class']}")
 
-    # Step 3: Battle between the two heroes
+    # Step 3: PvP encounter
     print("Starting PvP encounter...")
     victory = encounter(screen, player_hero, [opponent_hero], is_pvp=True)
 
@@ -37,6 +40,7 @@ def start_pvp(screen):
         print("You won the PvP battle!")
     else:
         print("You lost the PvP battle.")
+
 
 
 from src.character import create_main_character, save_main_character  # Ensure save_main_character is imported

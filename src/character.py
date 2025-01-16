@@ -27,6 +27,7 @@ def create_main_character(character_data):
         "spells": class_spells,
         "weapons": class_weapons,
         "ancestry": compatible_ancestry,
+        "background": character_data.get("background", None),  # Include the background
         "image": character_data["image"]
     }
 
