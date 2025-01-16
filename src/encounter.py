@@ -78,14 +78,15 @@ def show_console(screen, font):
         screen.blit(text_surface, (console_x + 10, console_y + 10 + i * 20))
 
 
-def encounter(screen, main_character, mob_pool):
+def encounter(screen, main_character, mob_pool, is_pvp=False):
     """
-    Handles a battle between the hero and a monster.
+    Handles a battle between the hero and a monster or another hero.
 
     Args:
         screen: Pygame display surface.
         main_character: Dictionary representing the hero.
-        mob_pool: List of available monsters.
+        mob_pool: List of available monsters or heroes.
+        is_pvp: If True, treats mob_pool as a list of heroes for PvP.
 
     Returns:
         bool: True if the hero wins, False if they lose.
@@ -97,30 +98,36 @@ def encounter(screen, main_character, mob_pool):
     main_character.setdefault('status', None)
     main_character.setdefault('max_hp', main_character.get('hp', 100))
 
-    selected_monster = random.choices(
-        mob_pool,
-        weights=[mob["probability"] for mob in mob_pool],
-        k=1
-    )[0]
+    # Selection logic
+    if is_pvp:
+        selected_opponent = mob_pool[0]  # In PvP, we pass only one opponent
+    else:
+        selected_opponent = random.choices(
+            mob_pool,
+            weights=[mob["probability"] for mob in mob_pool],
+            k=1
+        )[0]
 
     try:
-        monster_image = pygame.image.load(selected_monster["image"])
+        monster_image = pygame.image.load(selected_opponent["image"])
         monster_image = pygame.transform.scale(
             monster_image, (screen.get_width() // 3, screen.get_height() // 3)
         )
     except FileNotFoundError:
-        print(f"Error: Monster image not found ({selected_monster['image']}).")
+        print(f"Error: Monster image not found ({selected_opponent['image']}).")
         monster_image = pygame.Surface((400, 400))
         monster_image.fill((255, 0, 0))
 
+    # For PvP, use "class"; for PvE, omit "class"
     enemy = {
-        "name": selected_monster["name"],
-        "hp": selected_monster["hp"],
-        "max_hp": selected_monster["hp"],
-        "attack": selected_monster["attack"],
-        "class": selected_monster["type"],
+        "name": selected_opponent["name"],
+        "hp": selected_opponent["hp"],
+        "max_hp": selected_opponent["hp"],
+        "attack": selected_opponent["attack"],
+        "class": selected_opponent.get("class", "Monster"),  # Default to "Monster" if class is missing
         "status": None
     }
+
 
     running = True
     turn = "player"
