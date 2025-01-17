@@ -97,7 +97,10 @@ def encounter(screen, main_character, mob_pool, is_pvp=False):
     main_character.setdefault('coins', 0)
     main_character.setdefault('status', None)
     main_character.setdefault('max_hp', main_character.get('hp', 100))
-    
+    main_character.setdefault('xp', 0)
+    main_character.setdefault('level', 1)
+
+    # Increment encounter counter and check for merchant encounter
     encounter_counter += 1
     if encounter_counter % 5 == 0:  
         print("Rencontre avec le marchand déclenchée !")
@@ -172,9 +175,25 @@ def encounter(screen, main_character, mob_pool, is_pvp=False):
                         console_log.append(f"You attacked {enemy['name']} for {main_character['attack']} damage!")
                         if enemy["hp"] <= 0:
                             console_log.append(f"{enemy['name']} defeated!")
+
+                            # Récompenses en pièces
                             coins_reward = random.randint(5, 20)
                             main_character["coins"] += coins_reward
                             console_log.append(f"Earned {coins_reward} coins!")
+
+                            # Gain d'XP et gestion du level-up
+                            xp_gain = 50
+                            main_character["xp"] += xp_gain
+                            console_log.append(f"Gained {xp_gain} XP!")
+
+                            if main_character["xp"] >= main_character["level"] * 100:
+                                main_character["level"] += 1
+                                main_character["xp"] = 0
+                                main_character["max_hp"] += 10
+                                main_character["hp"] = main_character["max_hp"]
+                                console_log.append(f"Level up! Level {main_character['level']}.")
+                                level_up_animation(screen, font, "LEVEL UP!")
+
                             victory_screen(screen, f"You defeated {enemy['name']}!", "Press Q to continue your adventure", background)
                             running = False
                             return True
@@ -217,7 +236,7 @@ def encounter(screen, main_character, mob_pool, is_pvp=False):
 
         # Draw player stats (e.g., coins)
         player_coins = main_character.get("coins", 0)
-        player_text = font.render(f"{main_character['name']} - Coins: {player_coins}", True, (255, 255, 255))
+        player_text = font.render(f"{main_character['name']} - Coins: {player_coins} - Level: {main_character['level']}", True, (255, 255, 255))
         screen.blit(player_text, (50, screen.get_height() - 50))
 
         # Display console logs

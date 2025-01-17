@@ -5,7 +5,7 @@
     "defense": 15.0,
     "weight": 20.0,
     "description": "A sturdy iron cuirass that offers basic protection in battle.",
-    "image": "assets/armors/iron_cuirass.jpg"
+    "image": "assets/armors/Iron_Cuirrass.jpg"
   },
   {
     "name": "Magical Armor",
@@ -13,7 +13,7 @@
     "defense": 25.0,
     "weight": 10.0,
     "description": "An enchanted armor that enhances magical protection.",
-    "image": "assets/armors/magical_armor.jpg"
+    "image": "assets/armors/Magical_armor.jpg"
   },
   {
     "name": "Leather Tunic",
@@ -21,7 +21,7 @@
     "defense": 10.0,
     "weight": 5.0,
     "description": "A lightweight leather tunic that allows for agile movement.",
-    "image": "assets/armors/leather_tunic.jpg"
+    "image": "assets/armors/Leather_tunic.jpg"
   },
   {
     "name": "Assassin's Cloak",
@@ -29,7 +29,7 @@
     "defense": 12.0,
     "weight": 3.0,
     "description": "A stealthy cloak designed to provide minimal protection while enhancing agility.",
-    "image": "assets/armors/assassins_cloak.jpg"
+    "image": "assets/armors/assasin_cloak.jpg"
   },
   {
     "name": "Dragon Scale Armor",
@@ -45,7 +45,7 @@
     "defense": 18.0,
     "weight": 8.0,
     "description": "A mystical robe infused with arcane energy, increasing mana regeneration.",
-    "image": "assets/armors/mystic_robe.jpg"
+    "image": "assets/armors/Mystic_Robe.jpg"
   },
   {
     "name": "Elven Vest",
@@ -53,7 +53,7 @@
     "defense": 20.0,
     "weight": 6.0,
     "description": "A finely crafted vest by elves, offering balance between protection and agility.",
-    "image": "assets/armors/elven_vest.jpg"
+    "image": "assets/armors/Elven_rest.jpg"
   },
   {
     "name": "Shadow Armor",
@@ -61,6 +61,6 @@
     "defense": 15.0,
     "weight": 4.0,
     "description": "An armor designed for assassins, providing enhanced stealth and light protection.",
-    "image": "assets/armors/shadow_armor.jpg"
+    "image": "assets/armors/Shadow_Armo.jpg"
   }
 ]
