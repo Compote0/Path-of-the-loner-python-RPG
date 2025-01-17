@@ -3,11 +3,10 @@ import pygame
 from src.effects import apply_effect, random_effect
 from src.utility import load_data
 from src.merchant import merchant_encounter
-from src.transition_screens import encounter_screen, victory_screen, defeat_screen, merchant_screen
+from src.transition_screens import encounter_screen, victory_screen, defeat_screen
 
 encounter_counter = 0
 console_log = []
-
 
 def fade_effect(screen, image):
     """Applique un effet de fondu sur l'image affichée."""
@@ -22,7 +21,6 @@ def fade_effect(screen, image):
         screen.blit(fade_surface, (0, 0))
         pygame.display.flip()
         clock.tick(30)
-
 
 def level_up_animation(screen, font, text):
     """Affiche un texte de niveau gagné qui apparaît et disparaît au milieu de l'écran."""
@@ -50,9 +48,8 @@ def level_up_animation(screen, font, text):
 
         alpha = max(0, alpha - (255 / duration))
 
-
 def draw_health_bar(screen, x, y, width, height, current_hp, max_hp, color, border_color):
-    """Dessine une barre de santé esthétique avec bordures et coins arrondis."""
+    """Dessine une barre de santé ésthétique avec bordures et coins arrondis."""
     health_width = max(0, int((current_hp / max_hp) * width))
 
     # Fond de la barre de vie
@@ -60,7 +57,6 @@ def draw_health_bar(screen, x, y, width, height, current_hp, max_hp, color, bord
 
     # Barre de vie actuelle
     pygame.draw.rect(screen, color, (x, y, health_width, height), border_radius=5)
-
 
 def show_console(screen, font):
     """Affiche une console en bas à droite avec les logs."""
@@ -102,7 +98,14 @@ def encounter(screen, main_character, mob_pool, is_pvp=False):
     main_character.setdefault('status', None)
     main_character.setdefault('max_hp', main_character.get('hp', 100))
 
-    # Select the opponent
+    # Vérifier si une rencontre avec le marchand doit être effectuée
+    encounter_counter += 1
+    if encounter_counter % 5 == 0:  # Toutes les 5 rencontres
+        print("Rencontre avec le marchand déclenchée !")
+        merchant_encounter(screen, main_character)
+        return True  # Revenir à la boucle principale après la rencontre avec le marchand
+
+    # Sélection de l'adversaire
     if not mob_pool:
         raise ValueError("mob_pool is empty. No opponents available.")
 
