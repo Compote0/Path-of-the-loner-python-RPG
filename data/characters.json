@@ -2,7 +2,7 @@
   {
     "class": "Warrior",
     "hp": 120,
-    "attack": 30,
+    "attack": 15,
     "defense": 10,
     "speed": 5,
     "description": "The warrior is sturdy and deals consistent damage with good defense.",
