@@ -52,10 +52,10 @@ def draw_health_bar(screen, x, y, width, height, current_hp, max_hp, color, bord
     """Dessine une barre de santé ésthétique avec bordures et coins arrondis."""
     health_width = max(0, int((current_hp / max_hp) * width))
 
-    # Fond de la barre de vie
+  
     pygame.draw.rect(screen, border_color, (x - 2, y - 2, width + 4, height + 4), border_radius=5)
 
-    # Barre de vie actuelle
+    
     pygame.draw.rect(screen, color, (x, y, health_width, height), border_radius=5)
 
 def show_console(screen, font):
@@ -65,12 +65,12 @@ def show_console(screen, font):
     console_x = screen.get_width() - console_width - 20
     console_y = screen.get_height() - console_height - 20
 
-    # Dessiner la console
+   
     pygame.draw.rect(screen, (30, 30, 30), (console_x, console_y, console_width, console_height), border_radius=10)
     pygame.draw.rect(screen, (200, 200, 0), (console_x, console_y, console_width, console_height), 3, border_radius=10)
 
-    # Afficher les logs
-    for i, log in enumerate(console_log[-8:]):  # Derniers 8 logs
+    
+    for i, log in enumerate(console_log[-8:]):  
         text_surface = font.render(log, True, (255, 255, 0))
         screen.blit(text_surface, (console_x + 10, console_y + 10 + i * 20))
 
@@ -97,15 +97,13 @@ def encounter(screen, main_character, mob_pool, is_pvp=False):
     main_character.setdefault('coins', 0)
     main_character.setdefault('status', None)
     main_character.setdefault('max_hp', main_character.get('hp', 100))
-
-    # Vérifier si une rencontre avec le marchand doit être effectuée
+    
     encounter_counter += 1
-    if encounter_counter % 5 == 0:  # Toutes les 5 rencontres
+    if encounter_counter % 5 == 0:  
         print("Rencontre avec le marchand déclenchée !")
         merchant_encounter(screen, main_character)
-        return True  # Revenir à la boucle principale après la rencontre avec le marchand
+        return True  
 
-    # Sélection de l'adversaire
     if not mob_pool:
         raise ValueError("mob_pool is empty. No opponents available.")
 
