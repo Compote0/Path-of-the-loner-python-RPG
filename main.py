@@ -10,7 +10,9 @@ def main():
     try:
         pygame.init()
 
-        screen = pygame.display.set_mode((1920, 1080))
+        ## Set dispaly fullscreen
+
+        screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         pygame.display.set_caption("Path of the Loner")
 
         choice = main_menu(screen)

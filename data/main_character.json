@@ -2,7 +2,7 @@
     "name": "Hero",
     "class": "Warrior",
     "hp": 120,
-    "attack": 30,
+    "attack": 15,
     "defense": 10,
     "speed": 5,
     "status": null,
