@@ -1,27 +1,24 @@
+import os
 import pygame
 
-def select_equipment(screen, items, prompt):
+def select_equipment(screen, items, prompt, background_image):
     """
-    Displays a selection screen for equipment (weapons or armor).
-
-    Args:
-        screen: Pygame surface for rendering.
-        items: List of equipment items to choose from.
-        prompt: Message to display for the selection.
-
-    Returns:
-        dict: The selected equipment item.
+    Displays a selection screen for equipment with mouse interactions.
     """
     font = pygame.font.Font(None, 36)
     item_images = []
 
+    # load and adapt the background to the screen size
+    background = pygame.image.load(background_image)
+    background = pygame.transform.scale(background, screen.get_size())  
+
     for item in items:
         try:
             image = pygame.image.load(item["image"])
-            image = pygame.transform.scale(image, (150, 150))
+            image = pygame.transform.scale(image, (200, 200))
             item_images.append(image)
         except FileNotFoundError:
-            placeholder = pygame.Surface((150, 150))
+            placeholder = pygame.Surface((200, 200))
             placeholder.fill((255, 0, 0))
             item_images.append(placeholder)
 
@@ -29,36 +26,40 @@ def select_equipment(screen, items, prompt):
     selected_item = None
 
     while running:
-        screen.fill((0, 0, 0))
-        prompt_text = font.render(prompt, True, (255, 255, 255))
-        screen.blit(prompt_text, ((800 - prompt_text.get_width()) // 2, 50))
+        screen.blit(background, (0, 0))
+
+        # dynamic centering
+        screen_width, screen_height = screen.get_size()
+        items_count = len(items)
+        item_spacing = 300
+        total_width = items_count * item_spacing
+
+        # center the instruction text above the classes
+        instructions = font.render(prompt, True, (255, 255, 255))
+        screen.blit(instructions, (screen_width // 2 - instructions.get_width() // 2, 50))
 
         for idx, item in enumerate(items):
-            screen.blit(item_images[idx], (100 + idx * 200, 200))
-            item_text = font.render(item["name"], True, (255, 255, 255))
-            screen.blit(item_text, (130 + idx * 200, 370))
+            x_pos = (screen_width // 2 - total_width // 2) + idx * item_spacing
+            y_pos = screen_height // 2 - 100
 
-        instructions = font.render("Press [1], [2], [3], ... to choose an item", True, (255, 255, 255))
-        screen.blit(instructions, (50, 500))
+            screen.blit(item_images[idx], (x_pos, y_pos))
+            item_text = font.render(item["name"], True, (255, 255, 255))
+            screen.blit(item_text, (x_pos + 50, y_pos + 210))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
                 return None
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_1 and len(items) > 0:
-                    selected_item = items[0]
-                elif event.key == pygame.K_2 and len(items) > 1:
-                    selected_item = items[1]
-                elif event.key == pygame.K_3 and len(items) > 2:
-                    selected_item = items[2]
-                elif event.key == pygame.K_4 and len(items) > 3:
-                    selected_item = items[3]
-
-                if selected_item:
-                    running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_x, mouse_y = event.pos
+                for idx, item in enumerate(items):
+                    x_pos = (screen_width // 2 - total_width // 2) + idx * item_spacing
+                    y_pos = screen_height // 2 - 100
+                    if x_pos <= mouse_x <= x_pos + 200 and y_pos <= mouse_y <= y_pos + 200:
+                        selected_item = item
+                        running = False
 
         pygame.display.flip()
-
+    
     return selected_item

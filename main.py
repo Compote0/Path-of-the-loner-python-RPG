@@ -12,7 +12,7 @@ def main():
 
         ## Set dispaly fullscreen
 
-        screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        screen = pygame.display.set_mode((1920, 1080))
         pygame.display.set_caption("Path of the Loner")
 
         choice = main_menu(screen)
@@ -43,7 +43,7 @@ def main():
             # Force class selection if no main character exists
             if not main_character:
                 print("No main character found. Starting class selection.")
-                selected_class = select_class(screen, characters)
+                selected_class = select_class(screen, characters, background_image="assets/background.jpg")
                 if not selected_class:
                     print("Class selection cancelled. Exiting PvE.")
                     return

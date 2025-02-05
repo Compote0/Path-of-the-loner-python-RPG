@@ -1,22 +1,24 @@
+import os
 import pygame
-from src.utility import load_data
-from src.character import create_main_character, save_main_character
-from src.encounter import encounter
 
-def select_class(screen, characters):
+def select_class(screen, characters, background_image):
     """
-    Allow the player to select their class.
+    Allow the player to select their class using mouse clicks.
     """
     font = pygame.font.Font(None, 36)
     class_images = []
 
+    # load and adapt the background to the screen size
+    background = pygame.image.load(background_image)
+    background = pygame.transform.scale(background, screen.get_size())  
+
     for char in characters:
         try:
             image = pygame.image.load(char["image"])
-            image = pygame.transform.scale(image, (150, 150))
+            image = pygame.transform.scale(image, (200, 200))
             class_images.append(image)
         except FileNotFoundError:
-            placeholder = pygame.Surface((150, 150))
+            placeholder = pygame.Surface((200, 200))
             placeholder.fill((255, 0, 0))
             class_images.append(placeholder)
 
@@ -24,33 +26,39 @@ def select_class(screen, characters):
     selected_class = None
 
     while running:
-        screen.fill((0, 0, 0))
+        screen.blit(background, (0, 0))
+
+        # dynamic centering
+        screen_width, screen_height = screen.get_size()
+        items_count = len(characters)
+        item_spacing = 300
+        total_width = items_count * item_spacing
+
+        # center the instruction text above the classes
+        instructions = font.render("Click on a class to choose", True, (255, 255, 255))
+        screen.blit(instructions, (screen_width // 2 - instructions.get_width() // 2, 50))
 
         for idx, char in enumerate(characters):
-            screen.blit(class_images[idx], (100 + idx * 200, 200))
-            class_text = font.render(char["class"], True, (255, 255, 255))
-            screen.blit(class_text, (130 + idx * 200, 370))
+            x_pos = (screen_width // 2 - total_width // 2) + idx * item_spacing
+            y_pos = screen_height // 2 - 100
 
-        instructions = font.render("Press [1], [2], [3], [4] to choose a class", True, (255, 255, 255))
-        screen.blit(instructions, (50, 50))
+            screen.blit(class_images[idx], (x_pos, y_pos))
+            class_text = font.render(char["class"], True, (255, 255, 255))
+            screen.blit(class_text, (x_pos + 50, y_pos + 210))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_1 and len(characters) > 0:
-                    selected_class = characters[0]
-                elif event.key == pygame.K_2 and len(characters) > 1:
-                    selected_class = characters[1]
-                elif event.key == pygame.K_3 and len(characters) > 2:
-                    selected_class = characters[2]
-                elif event.key == pygame.K_4 and len(characters) > 3:
-                    selected_class = characters[3]
-
-                if selected_class:
-                    running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_x, mouse_y = event.pos
+                for idx, char in enumerate(characters):
+                    x_pos = (screen_width // 2 - total_width // 2) + idx * item_spacing
+                    y_pos = screen_height // 2 - 100
+                    if x_pos <= mouse_x <= x_pos + 200 and y_pos <= mouse_y <= y_pos + 200:
+                        selected_class = char
+                        running = False
 
         pygame.display.flip()
-
+    
     return selected_class

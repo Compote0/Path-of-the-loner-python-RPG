@@ -4,11 +4,12 @@ import pygame
 def main_menu(screen):
     print("Loading the main menu...")
     clock = pygame.time.Clock()
+    screen_width, screen_height = screen.get_size()
 
     try:
         background_path = os.path.join("assets", "background.jpg")
         background = pygame.image.load(background_path)
-        background = pygame.transform.scale(background, (1920, 1080))
+        background = pygame.transform.scale(background, (screen_width, screen_height))
         print("Background successfully loaded.")
     except FileNotFoundError:
         print("Background file not found. Using a black background.")
@@ -17,8 +18,8 @@ def main_menu(screen):
 
     try:
         font_path = os.path.join("assets", "fonts", "pixel_font.ttf")
-        title_font = pygame.font.Font(font_path, 70)  # Slightly reduced title text size
-        button_font = pygame.font.Font(font_path, 30)  # Reduced button text size
+        title_font = pygame.font.Font(font_path, max(50, screen_width // 25))
+        button_font = pygame.font.Font(font_path, max(25, screen_width // 50))
         print("Font successfully loaded.")
     except FileNotFoundError:
         print("Font file not found.")
@@ -30,34 +31,22 @@ def main_menu(screen):
     play_pvp_text = button_font.render("Play PVP", True, (255, 255, 255))
     quit_text = button_font.render("Quit", True, (255, 255, 255))
 
-    button_width, button_height = 300, 65  
-    button_spacing = 20
+    button_width, button_height = screen_width // 4, screen_height // 12
+    button_spacing = screen_height // 50
 
-    play_pve_rect = pygame.Rect(
-        (1920 - button_width) // 2,
-        (1080 // 2) - button_height - button_spacing,
-        button_width,
-        button_height,
-    )
-    play_pvp_rect = pygame.Rect(
-        (1920 - button_width) // 2,
-        (1080 // 2),
-        button_width,
-        button_height,
-    )
-    quit_rect = pygame.Rect(
-        (1920 - button_width) // 2,
-        (1080 // 2) + button_height + button_spacing,
-        button_width,
-        button_height,
-    )
+    center_x = screen_width // 2 - button_width // 2
+    center_y = screen_height // 2 - button_height // 2
+
+    play_pve_rect = pygame.Rect(center_x, center_y - button_height - button_spacing, button_width, button_height)
+    play_pvp_rect = pygame.Rect(center_x, center_y, button_width, button_height)
+    quit_rect = pygame.Rect(center_x, center_y + button_height + button_spacing, button_width, button_height)
 
     running = True
     while running:
         screen.blit(background, (0, 0))
 
         # Draw the title
-        title_pos = ((1920 - title_text.get_width()) // 2, 50)  # Title slightly moved up
+        title_pos = ((screen_width - title_text.get_width()) // 2, screen_height // 10)
         screen.blit(title_text, title_pos)
 
         # Draw buttons with rounded borders

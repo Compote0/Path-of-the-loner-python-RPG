@@ -38,9 +38,11 @@ def game_loop(screen, main_character):
     class_armors = [armor for armor in armors if armor["class"] == main_character["class"]]
 
     print("Prompting weapon selection...")
-    selected_weapon = select_equipment(screen, class_weapons, "Choose your weapon")
+    selected_weapon = select_equipment(screen, class_weapons, "Choose your weapon", background_image="assets/background.jpg")
+
     print("Prompting armor selection...")
-    selected_armor = select_equipment(screen, class_armors, "Choose your armor")
+    selected_armor = select_equipment(screen, class_armors, "Choose your armor", background_image="assets/background.jpg")
+
 
     # Apply stats from the selected equipment
     if selected_weapon:
