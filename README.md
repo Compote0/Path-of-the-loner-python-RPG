@@ -11,7 +11,7 @@
 This game features:
 
 - A **turn-based combat system** with strategic decisions.
-- A **progression system** where players earn XP and level up.
+- A **progression system** where players earn XP and level up and a saving system.
 - A **merchant system** that appears every 5 encounters to buy useful items.
 - Dynamic **enemy encounters**, each with unique stats, images, and backgrounds.
 
@@ -105,6 +105,7 @@ The game uses multiple assets, categorized as follows:
 ## 🛠️ Features Overview
 
 - **Turn-based combat with AI-controlled opponents**.
+- **Save game system in real time**
 - **Procedural encounters with different enemy types**.
 - **XP and Leveling system** to enhance player stats.
 - **Merchant system every 5 fights to buy potions and weapons**.
@@ -126,7 +127,6 @@ Path-of-the-Loner/
 │── src/                       # Source code for game logic
 │   │── character.py           # Character creation logic file
 │   │── class_selection.py     # Character class selection logic
-│   │── combat.py              # Core battle system
 │   │── effects.py             # Special effects like status conditions
 │   │── encounter.py           # Handles the encounter system
 │   │── equipment_selection.py # Handles the weapons and armor selection
@@ -176,12 +176,6 @@ Contributions are welcome! If you wish to improve the game, please:
 5. **Create a Pull Request**.
 
 For major changes, please open an issue first to discuss your ideas.
-
----
-
-## 📜 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
