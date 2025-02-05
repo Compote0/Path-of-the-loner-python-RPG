@@ -1,3 +1,5 @@
+import json
+import os
 import random
 import pygame
 from src.encounter import encounter
@@ -5,6 +7,20 @@ from src.utility import load_data
 from src.class_selection import select_class
 from src.equipment_selection import select_equipment
 
+SAVE_FILE = "data/player_save.json"  # save file 
+
+def save_player_data(main_character):
+    """Save the player's current state to a file."""
+    with open(SAVE_FILE, "w") as file:
+        json.dump(main_character, file, indent=4)
+    print("Player data saved.")
+
+def load_player_data():
+    """Load the player's state from a file if it exists."""
+    if os.path.exists(SAVE_FILE):
+        with open(SAVE_FILE, "r") as file:
+            return json.load(file)
+    return None
 
 def generate_rewards():
     """
@@ -26,7 +42,13 @@ def game_loop(screen, main_character):
     """
     print("Starting the main PvE game loop.")
 
-    # Step 1: Equipment selection
+    # load player data if exists
+    saved_data = load_player_data()
+    if saved_data:
+        main_character.update(saved_data)  # update maincharacter with data
+        print("Loaded saved player data.")
+
+    # Step 1: Load available equipment
     weapons = load_data("data/weapons.json")
     armors = load_data("data/armors.json")
     if not weapons or not armors:
@@ -37,21 +59,34 @@ def game_loop(screen, main_character):
     class_weapons = [weapon for weapon in weapons if weapon["class"] == main_character["class"]]
     class_armors = [armor for armor in armors if armor["class"] == main_character["class"]]
 
-    print("Prompting weapon selection...")
-    selected_weapon = select_equipment(screen, class_weapons, "Choose your weapon", background_image="assets/background.jpg")
+    # verify and select weapon
+    if "equipment" not in main_character:
+        main_character["equipment"] = {}
 
-    print("Prompting armor selection...")
-    selected_armor = select_equipment(screen, class_armors, "Choose your armor", background_image="assets/background.jpg")
+    if "weapon" not in main_character["equipment"]:
+        print("Prompting weapon selection...")
+        selected_weapon = select_equipment(
+            screen, class_weapons, "Choose your weapon", background_image="assets/background.jpg"
+        )
+        if selected_weapon:
+            main_character["attack"] += selected_weapon["damage"]
+            main_character["equipment"]["weapon"] = selected_weapon
+            save_player_data(main_character)  # save after selection
+    else:
+        print(f"Weapon already selected: {main_character['equipment']['weapon']['name']}")
 
-
-    # Apply stats from the selected equipment
-    if selected_weapon:
-        main_character["attack"] += selected_weapon["damage"]
-        main_character.setdefault("equipment", {})["weapon"] = selected_weapon
-
-    if selected_armor:
-        main_character["defense"] += selected_armor["defense"]
-        main_character.setdefault("equipment", {})["armor"] = selected_armor
+    # verify and select armor
+    if "armor" not in main_character["equipment"]:
+        print("Prompting armor selection...")
+        selected_armor = select_equipment(
+            screen, class_armors, "Choose your armor", background_image="assets/background.jpg"
+        )
+        if selected_armor:
+            main_character["defense"] += selected_armor["defense"]
+            main_character["equipment"]["armor"] = selected_armor
+            save_player_data(main_character)  # Sauvegarde après sélection
+    else:
+        print(f"Armor already selected: {main_character['equipment']['armor']['name']}")
 
     # Step 2: Load monsters and start the game loop
     monsters = load_data("data/monsters.json")
@@ -88,10 +123,23 @@ def game_loop(screen, main_character):
         # Apply rewards
         main_character["hp"] = min(main_character["hp"] + rewards["items"].get("healing", 0), main_character["max_hp"])
         if rewards["items"]["type"] == "weapon":
-            main_character["attack"] += rewards["items"]["attack"]
+            # verify if the player has a weapon already
+            if "weapon" not in main_character["equipment"]:
+                main_character["attack"] += rewards["items"]["attack"]
+                main_character["equipment"]["weapon"] = rewards["items"]
+                save_player_data(main_character)  # save after reward
+            else:
+                print("You already have a weapon. No new weapon assigned.")
+
         elif rewards["items"]["type"] == "armor":
-            main_character["defense"] += rewards["items"]["defense"]
+            # verify if player has an armor already
+            if "armor" not in main_character["equipment"]:
+                main_character["defense"] += rewards["items"]["defense"]
+                main_character["equipment"]["armor"] = rewards["items"]
+                save_player_data(main_character)  # save after reward
+            else:
+                print("You already have an armor. No new armor assigned.")
 
         current_level += 1  
-        
+
     print("Exiting PvE mode.")

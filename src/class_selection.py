@@ -35,7 +35,7 @@ def select_class(screen, characters, background_image):
         total_width = items_count * item_spacing
 
         # center the instruction text above the classes
-        instructions = font.render("Click on a class to choose", True, (255, 255, 255))
+        instructions = font.render("Click on a class to choose your class", True, (255, 255, 255))
         screen.blit(instructions, (screen_width // 2 - instructions.get_width() // 2, 50))
 
         for idx, char in enumerate(characters):

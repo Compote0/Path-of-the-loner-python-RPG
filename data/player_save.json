@@ -2,8 +2,8 @@
     "name": "Hero",
     "class": "Mage",
     "hp": 70,
-    "attack": 25,
-    "defense": 3,
+    "attack": 35,
+    "defense": 21.0,
     "speed": 7,
     "status": null,
     "spells": [
@@ -118,5 +118,22 @@
         }
     ],
     "background": "assets/hero_backgrounds/wizard_background.jpg",
-    "image": "assets/characters/mage.jpg"
+    "image": "assets/characters/mage.jpg",
+    "equipment": {
+        "weapon": {
+            "name": "Fire Staff",
+            "class": "Mage",
+            "damage": 10,
+            "description": "A magical staff that amplifies fire spells.",
+            "image": "assets/weapon/firestaff.jpg"
+        },
+        "armor": {
+            "name": "Mystic Robe",
+            "class": "Mage",
+            "defense": 18.0,
+            "weight": 8.0,
+            "description": "A mystical robe infused with arcane energy, increasing mana regeneration.",
+            "image": "assets/armors/Mystic_Robe.jpg"
+        }
+    }
 }

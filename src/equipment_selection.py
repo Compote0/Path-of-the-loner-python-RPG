@@ -1,14 +1,20 @@
 import os
 import pygame
 
-def select_equipment(screen, items, prompt, background_image):
+def select_equipment(screen, items, prompt, background_image, current_selection=None):
     """
     Displays a selection screen for equipment with mouse interactions.
+    Prevents overwriting the selection if an item is already equipped.
     """
+    # If the player already has selected equipment, return it without re-selection
+    if current_selection:
+        print(f"{prompt} already selected: {current_selection['name']}")
+        return current_selection  
+
     font = pygame.font.Font(None, 36)
     item_images = []
 
-    # load and adapt the background to the screen size
+    # Load and adapt the background to the screen size
     background = pygame.image.load(background_image)
     background = pygame.transform.scale(background, screen.get_size())  
 
@@ -28,13 +34,13 @@ def select_equipment(screen, items, prompt, background_image):
     while running:
         screen.blit(background, (0, 0))
 
-        # dynamic centering
+        # Dynamic centering
         screen_width, screen_height = screen.get_size()
         items_count = len(items)
         item_spacing = 300
         total_width = items_count * item_spacing
 
-        # center the instruction text above the classes
+        # Center the instruction text above the items
         instructions = font.render(prompt, True, (255, 255, 255))
         screen.blit(instructions, (screen_width // 2 - instructions.get_width() // 2, 50))
 
@@ -49,7 +55,7 @@ def select_equipment(screen, items, prompt, background_image):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-                return None
+                return current_selection  # Keep the current selection if the user exits
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_x, mouse_y = event.pos
@@ -62,4 +68,4 @@ def select_equipment(screen, items, prompt, background_image):
 
         pygame.display.flip()
     
-    return selected_item
+    return selected_item if selected_item else current_selection  # Keep previous selection if none chosen
