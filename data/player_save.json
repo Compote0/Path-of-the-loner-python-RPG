@@ -2,8 +2,8 @@
     "name": "Hero",
     "class": "Warrior",
     "hp": 120,
-    "attack": 30,
-    "defense": 25.0,
+    "attack": 35,
+    "defense": 60.0,
     "speed": 5,
     "status": null,
     "spells": [
@@ -148,19 +148,19 @@
     "image": "assets/characters/warrior.jpg",
     "equipment": {
         "weapon": {
-            "name": "Long Sword",
+            "name": "War Axe",
             "class": "Warrior",
-            "damage": 15,
-            "description": "A balanced sword for melee combat.",
-            "image": "assets/weapon/longsword.jpg"
+            "damage": 20,
+            "description": "A heavy axe that deals massive damage.",
+            "image": "assets/weapon/axe.jpg"
         },
         "armor": {
-            "name": "Iron Cuirass",
+            "name": "Dragon Scale Armor",
             "class": "Warrior",
-            "defense": 15.0,
-            "weight": 20.0,
-            "description": "A sturdy iron cuirass that offers basic protection in battle.",
-            "image": "assets/armors/Iron_Cuirrass.jpg"
+            "defense": 50.0,
+            "weight": 25.0,
+            "description": "An armor forged from dragon scales, offering unmatched protection against fire.",
+            "image": "assets/armors/dragon_scale_armor.jpg"
         }
     }
 }
