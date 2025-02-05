@@ -9,7 +9,7 @@ encounter_counter = 0
 console_log = []
 
 def fade_effect(screen, image):
-    """Applique un effet de fondu sur l'image affichée."""
+    """Applies a fade effect to the displayed image."""
     clock = pygame.time.Clock()
     fade_surface = pygame.Surface(image.get_size()).convert()
     fade_surface.fill((0, 0, 0))
@@ -23,7 +23,7 @@ def fade_effect(screen, image):
         clock.tick(30)
 
 def level_up_animation(screen, font, text):
-    """Affiche un texte de niveau gagné qui apparaît et disparaît au milieu de l'écran."""
+    """shows up a level up animation screen when gaining experience."""
     clock = pygame.time.Clock()
     alpha = 255
     text_surface = font.render(text, True, (0, 255, 0))
@@ -49,7 +49,7 @@ def level_up_animation(screen, font, text):
         alpha = max(0, alpha - (255 / duration))
 
 def draw_health_bar(screen, x, y, width, height, current_hp, max_hp, color, border_color):
-    """Dessine une barre de santé ésthétique avec bordures et coins arrondis."""
+    """draw a cool health bar."""
     health_width = max(0, int((current_hp / max_hp) * width))
 
   
@@ -59,7 +59,7 @@ def draw_health_bar(screen, x, y, width, height, current_hp, max_hp, color, bord
     pygame.draw.rect(screen, color, (x, y, health_width, height), border_radius=5)
 
 def show_console(screen, font):
-    """Affiche une console en bas à droite avec les logs."""
+    """show a console in game with the adventure logs."""
     console_width = 400
     console_height = 200
     console_x = screen.get_width() - console_width - 20
@@ -100,63 +100,39 @@ def encounter(screen, main_character, mob_pool, is_pvp=False):
     main_character.setdefault('xp', 0)
     main_character.setdefault('level', 1)
 
-    # Increment encounter counter and check for merchant encounter
     encounter_counter += 1
-    if encounter_counter % 5 == 0:  
+    if encounter_counter % 5 == 0:
         print("Rencontre avec le marchand déclenchée !")
         merchant_encounter(screen, main_character)
-        return True  
+        return True
 
     if not mob_pool:
         raise ValueError("mob_pool is empty. No opponents available.")
 
     selected_opponent = random.choice(mob_pool)
-
-    # Debug: Log full data of the opponent
-    print(f"Selected opponent data: {selected_opponent}")
-
-    # Use 'type' instead of 'class' for monsters
-    opponent_type = selected_opponent.get("type", "Unknown")
     opponent_name = selected_opponent.get("name", "Unknown")
-    print(f"Selected opponent: {opponent_name} ({opponent_type})")
 
-    # Load the background
     background_path = selected_opponent.get("background", "assets/monsters_rooms/default_room.jpg")
-    try:
-        background = load_background(background_path)
-    except Exception as e:
-        print(f"Error loading background: {e}")
-        background = load_background("assets/monsters_rooms/default_room.jpg")
+    background = load_background(background_path)
 
-    # Load the opponent's image
-    try:
-        monster_image = pygame.image.load(selected_opponent["image"])
-        scaled_width = monster_image.get_width() // 3
-        scaled_height = monster_image.get_height() // 3
-        monster_image = pygame.transform.scale(monster_image, (scaled_width, scaled_height))
-        monster_rect = monster_image.get_rect()
-        monster_rect.center = (screen.get_width() // 2, screen.get_height() // 2 - 100)
-    except FileNotFoundError:
-        print(f"Error: Opponent image not found ({selected_opponent['image']}).")
-        monster_image = pygame.Surface((400, 400))
-        monster_image.fill((255, 0, 0))
-        monster_rect = monster_image.get_rect()
-        monster_rect.center = (screen.get_width() // 2, screen.get_height() // 2 - 100)
+    monster_image = pygame.image.load(selected_opponent["image"])
+    scaled_width = monster_image.get_width() // 3
+    scaled_height = monster_image.get_height() // 3
+    monster_image = pygame.transform.scale(monster_image, (scaled_width, scaled_height))
+    monster_rect = monster_image.get_rect()
+    monster_rect.center = (screen.get_width() // 2, screen.get_height() // 2 - 100)
 
-    # Enemy data
     enemy = {
         "name": opponent_name,
         "hp": selected_opponent.get("hp", 100),
         "max_hp": selected_opponent.get("hp", 100),
         "attack": selected_opponent.get("attack", 10),
-        "type": opponent_type,
+        "type": selected_opponent.get("type", "Unknown"),
         "status": None
     }
 
-    # Screens for victory, encounter, and merchant
-    encounter_screen(screen, f"You encountered a {enemy['type']}: {enemy['name']}!", "Press Q to start the battle", background, monster_image)
+    encounter_screen(screen, f"You encountered {enemy['name']}!", "Press Q to start the battle", background, monster_image)
 
-    # Combat loop
     running = True
     turn = "player"
     while running:
@@ -166,41 +142,42 @@ def encounter(screen, main_character, mob_pool, is_pvp=False):
                 return False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    print("Exiting game...")
                     running = False
                     return False
                 if turn == "player" and event.key == pygame.K_a:
-                    if main_character["status"] not in ["Frozen", "Stunned"]:
+                    if main_character["status"] in ["Frozen", "Stunned"]:
+                        console_log.append(f"You are {main_character['status'].lower()} and cannot act!")
+                        turn = "enemy"
+                    else:
                         enemy["hp"] -= main_character["attack"]
                         console_log.append(f"You attacked {enemy['name']} for {main_character['attack']} damage!")
+                        
+                        if random.random() < 0.3:  #  30% of chance to apply an effect
+                            effect = random_effect()
+                            if effect:
+                                apply_effect(enemy, effect)
+                                console_log.append(f"{enemy['name']} is affected by {effect}!")
+
                         if enemy["hp"] <= 0:
                             console_log.append(f"{enemy['name']} defeated!")
-
-                            # Récompenses en pièces
-                            coins_reward = random.randint(5, 20)
-                            main_character["coins"] += coins_reward
-                            console_log.append(f"Earned {coins_reward} coins!")
-
-                            # Gain d'XP et gestion du level-up
-                            xp_gain = 50
-                            main_character["xp"] += xp_gain
-                            console_log.append(f"Gained {xp_gain} XP!")
-
-                            if main_character["xp"] >= main_character["level"] * 100:
-                                main_character["level"] += 1
-                                main_character["xp"] = 0
-                                main_character["max_hp"] += 10
-                                main_character["hp"] = main_character["max_hp"]
-                                console_log.append(f"Level up! Level {main_character['level']}.")
-                                level_up_animation(screen, font, "LEVEL UP!")
-
-                            victory_screen(screen, f"You defeated {enemy['name']}!", "Press Q to continue your adventure", background)
+                            victory_screen(screen, f"You defeated {enemy['name']}!", "Press Q to continue", background)
                             running = False
                             return True
                     turn = "enemy"
+        
         if turn == "enemy":
-            main_character["hp"] -= enemy["attack"]
-            console_log.append(f"{enemy['name']} attacked you for {enemy['attack']} damage!")
+            if enemy["status"] in ["Frozen", "Stunned"]:
+                console_log.append(f"{enemy['name']} is {enemy['status'].lower()} and cannot act!")
+            else:
+                main_character["hp"] -= enemy["attack"]
+                console_log.append(f"{enemy['name']} attacked you for {enemy['attack']} damage!")
+                
+                if random.random() < 0.3:  # 30% of chance to apply an effect
+                    effect = random_effect()
+                    if effect:
+                        apply_effect(main_character, effect)
+                        console_log.append(f"{main_character['name']} is affected by {effect}!")
+            
             if main_character["hp"] <= 0:
                 console_log.append("You have been defeated!")
                 defeat_screen(screen, f"{enemy['name']} has defeated you!", "Press Q to exit", background)
@@ -244,5 +221,6 @@ def encounter(screen, main_character, mob_pool, is_pvp=False):
 
         # Update the screen
         pygame.display.flip()
+
 
     return False

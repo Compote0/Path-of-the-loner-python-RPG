@@ -1,38 +1,45 @@
 {
     "name": "Hero",
-    "class": "Mage",
-    "hp": 70,
-    "attack": 25,
-    "defense": 3,
-    "speed": 7,
+    "class": "Warrior",
+    "hp": 120,
+    "attack": 15,
+    "defense": 10,
+    "speed": 5,
     "status": null,
     "spells": [
         {
-            "name": "Fireball",
-            "class": "Mage",
-            "damage": 30,
-            "mana_cost": 20,
-            "description": "Deals fire damage to ana enemy.",
-            "effect": "burn",
-            "image": "assets/spells/fireball.jpg"
+            "name": "Charge",
+            "class": "Warrior",
+            "damage": 35,
+            "mana_cost": 10,
+            "description": "A powerful attack that ignores enemy defense.",
+            "effect": "break",
+            "image": "assets/spells/charge.jpg"
         },
         {
-            "name": "Magic Barrier",
-            "class": "Mage",
+            "name": "Block",
+            "class": "Warrior",
             "damage": 0,
-            "mana_cost": 15,
-            "description": "Reduces damage taken for 2 turns.",
-            "effect": "shield",
-            "image": "assets/spells/magic_barrier.jpg"
+            "mana_cost": 0,
+            "description": "Significantly reduces damage taken for 1 turn.",
+            "effect": "block",
+            "image": "assets/spells/block.jpg"
         }
     ],
     "weapons": [
         {
-            "name": "Fire Staff",
-            "class": "Mage",
-            "damage": 10,
-            "description": "A magical staff that amplifies fire spells.",
-            "image": "assets/weapon/firestaff.jpg"
+            "name": "Long Sword",
+            "class": "Warrior",
+            "damage": 15,
+            "description": "A balanced sword for melee combat.",
+            "image": "assets/weapon/longsword.jpg"
+        },
+        {
+            "name": "War Axe",
+            "class": "Warrior",
+            "damage": 20,
+            "description": "A heavy axe that deals massive damage.",
+            "image": "assets/weapon/axe.jpg"
         }
     ],
     "ancestry": [
@@ -57,24 +64,24 @@
             "image": "assets/ancestry/dragonic.jpg"
         },
         {
-            "name": "Elemental",
-            "description": "This ancestry connects the bearer to the elements, increasing their ability to deal magical damage.",
-            "effect": "Increases elemental spell damage by 25%",
+            "name": "Sanguine",
+            "description": "Bearers of this ancestry grow stronger based on the damage they deal, at the cost of their own health.",
+            "effect": "Deals 15% additional damage but loses 5% health per attack",
             "stats_modifiers": {
-                "hp": 0,
-                "attack": 10,
-                "defense": 0,
+                "hp": -10,
+                "attack": 25,
+                "defense": -5,
                 "speed": 10
             },
             "abilities": [
-                "Lightning Storm",
-                "Elemental Protection"
+                "Life Drain",
+                "Blood Fury"
             ],
             "compatible_classes": [
-                "Mage",
-                "Archer"
+                "Assassin",
+                "Warrior"
             ],
-            "image": "assets/ancestry/elemental.jpg"
+            "image": "assets/ancestry/sanguine.jpg"
         },
         {
             "name": "Celestial",
@@ -115,8 +122,28 @@
                 "Mage"
             ],
             "image": "assets/ancestry/runic.jpg"
+        },
+        {
+            "name": "Beastial",
+            "description": "Heirs of the wild, these bearers increase their speed and physical power as the battle progresses.",
+            "effect": "Gains +2 attack and +1 speed per turn",
+            "stats_modifiers": {
+                "hp": 10,
+                "attack": 10,
+                "defense": 0,
+                "speed": 15
+            },
+            "abilities": [
+                "Savage Roar",
+                "Frenzy"
+            ],
+            "compatible_classes": [
+                "Archer",
+                "Warrior"
+            ],
+            "image": "assets/ancestry/beastial.jpg"
         }
     ],
-    "background": "assets/hero_backgrounds/wizard_background.jpg",
-    "image": "assets/characters/mage.jpg"
+    "background": "assets/hero_backgrounds/warrior_background.jpg",
+    "image": "assets/characters/warrior.jpg"
 }
