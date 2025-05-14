@@ -6,8 +6,14 @@ from src.encounter import encounter
 from src.utility import load_data
 from src.class_selection import select_class
 from src.equipment_selection import select_equipment
+from src.encounter import level_up_animation
+
 
 SAVE_FILE = "data/player_save.json"  # save file 
+
+def xp_needed_for_level(level):
+    return 100 * level  
+
 
 def save_player_data(main_character):
     """Save the player's current state to a file."""
@@ -119,6 +125,15 @@ def game_loop(screen, main_character):
         # Rewards
         rewards = generate_rewards()
         print(f"Rewards obtained: {rewards['gold']} gold and {rewards['items']['name']}.")
+
+        main_character["xp"] += 50  
+
+        if main_character["xp"] >= xp_needed_for_level(main_character["level"]):
+            main_character["xp"] = 0  
+            main_character["level"] += 1
+            level_up_animation(screen, pygame.font.Font(None, 64), "LEVEL UP!")
+            save_player_data(main_character)
+
 
         # Apply rewards
         main_character["hp"] = min(main_character["hp"] + rewards["items"].get("healing", 0), main_character["max_hp"])
