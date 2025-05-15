@@ -7,6 +7,7 @@ from src.utility import load_data
 from src.class_selection import select_class
 from src.equipment_selection import select_equipment
 from src.encounter import level_up_animation
+from models.armor import Armor
 
 
 SAVE_FILE = "data/player_save.json"  # save file 
@@ -88,8 +89,9 @@ def game_loop(screen, main_character):
             screen, class_armors, "Choose your armor", background_image="assets/background.jpg"
         )
         if selected_armor:
-            main_character["defense"] += selected_armor["defense"]
-            main_character["equipment"]["armor"] = selected_armor
+            armor_obj = Armor.from_dict(selected_armor)
+            main_character["defense"] += armor_obj.defense
+            main_character["equipment"]["armor"] = armor_obj.to_dict()
             save_player_data(main_character)  # Sauvegarde après sélection
     else:
         print(f"Armor already selected: {main_character['equipment']['armor']['name']}")
@@ -149,8 +151,10 @@ def game_loop(screen, main_character):
         elif rewards["items"]["type"] == "armor":
             # verify if player has an armor already
             if "armor" not in main_character["equipment"]:
-                main_character["defense"] += rewards["items"]["defense"]
-                main_character["equipment"]["armor"] = rewards["items"]
+                armor_obj = Armor.from_dict(rewards["items"])
+                main_character["defense"] += armor_obj.defense
+                main_character["equipment"]["armor"] = armor_obj.to_dict()
+
                 save_player_data(main_character)  # save after reward
             else:
                 print("You already have an armor. No new armor assigned.")

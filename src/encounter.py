@@ -4,6 +4,7 @@ from src.effects import apply_effect, random_effect
 from src.utility import load_data
 from src.merchant import merchant_encounter
 from src.transition_screens import encounter_screen, victory_screen, defeat_screen
+from models.armor import Armor
 
 encounter_counter = 0
 console_log = []
@@ -169,8 +170,20 @@ def encounter(screen, main_character, mob_pool, is_pvp=False):
             if enemy["status"] in ["Frozen", "Stunned"]:
                 console_log.append(f"{enemy['name']} is {enemy['status'].lower()} and cannot act!")
             else:
-                main_character["hp"] -= enemy["attack"]
-                console_log.append(f"{enemy['name']} attacked you for {enemy['attack']} damage!")
+                damage = enemy["attack"]
+                armor_data = main_character.get("equipment", {}).get("armor")
+
+                if armor_data:
+                    try:
+                        armor = Armor.from_dict(armor_data)
+                        damage = armor.reduce_damage(damage)
+                        console_log.append(f"Your armor reduced the damage to {damage:.0f}.")
+                    except Exception as e:
+                        console_log.append("Armor data invalid or not usable.")
+
+                main_character["hp"] -= damage
+                console_log.append(f"{enemy['name']} attacked you for {damage:.0f} damage!")
+
                 
                 if random.random() < 0.3:  # 30% of chance to apply an effect
                     effect = random_effect()

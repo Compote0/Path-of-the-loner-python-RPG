@@ -162,5 +162,9 @@
             "description": "An armor forged from dragon scales, offering unmatched protection against fire.",
             "image": "assets/armors/dragon_scale_armor.jpg"
         }
-    }
+    },
+    "coins": 0,
+    "max_hp": 120,
+    "xp": 0,
+    "level": 2
 }
